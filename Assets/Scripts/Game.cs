@@ -1,21 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Game : MonoBehaviour {
 
-	// Use this for initialization
-	void Awake () {
-        
-	}
+    [SerializeField]
+    private int level;
 	
-	// Update is called once per frame
-	void Update () {
-		if (Input.GetKeyDown(KeyCode.E)) {
-            LevelController.instance.CompleteLevel("Level1", 1);
-        }
-        if (Input.GetKeyDown(KeyCode.R)) {
-            LevelController.instance.StartLevel("Menu");
-        }
+    public void CompleteLevel(int stars) {
+        LevelController.instance.CompleteLevel("Level" + level, stars);
+
+        ExitLevel();
+    }
+
+    public void ExitLevel() {
+        LevelController.instance.StartLevel("Menu");
     }
 }

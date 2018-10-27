@@ -373,7 +373,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fa915891da83694299e87efb6b3cf08, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: {fileID: 0}
   levelIDText: {fileID: 114761514568682420}
   lockImage: {fileID: 1068668123537350}
 --- !u!222 &222040372535716630
@@ -531,7 +530,7 @@ RectTransform:
   m_GameObject: {fileID: 1500866007842744}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.9999951, y: 0.9999951, z: 0.9999951}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 224389091510447388}
   - {fileID: 224039376757853118}

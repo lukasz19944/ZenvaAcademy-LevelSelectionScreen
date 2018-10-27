@@ -11,9 +11,13 @@ public class UILevelSelect : MonoBehaviour {
     [SerializeField]
     private LevelPopup levelPopup;
 
+    private int maxPage;
+    private int pageSize = 12;
+
     private Transform levelSelectPanel;
     private int currentPage;
     private List<UILevel> levelList = new List<UILevel>();
+
 
 	// Use this for initialization
 	void Start () {
@@ -23,32 +27,36 @@ public class UILevelSelect : MonoBehaviour {
             levelList.Add(levelUI);
         }
 
+        maxPage = levelList.Count / pageSize;
+
         BuildLevelPage(0);
 	}
 	
     private void BuildLevelPage(int page) {
-        RemoveItemsFromPage();
+ 
+        if (page >= 0 && page <= maxPage) {
+            RemoveItemsFromPage();
 
-        currentPage = page;
+            currentPage = page;
 
-        int pageSize = 12;
+            List<UILevel> pageList = levelList.Skip(page * pageSize).Take(pageSize).ToList();
 
-        List<UILevel> pageList = levelList.Skip(page * pageSize).Take(pageSize).ToList();
+            for (int i = 0; i < pageList.Count; i++) {
+                Level level = LevelController.instance.levels[(page * pageSize) + i];
 
-        for (int i = 0; i < pageList.Count; i++) {
-            Level level = LevelController.instance.levels[(page * pageSize) + i];
+                UILevel instance = Instantiate(pageList[i]);
+                instance.SetStars(level.Stars);
+                instance.transform.SetParent(levelSelectPanel);
+                instance.transform.localScale = new Vector3(1f, 1f, 1f);
+                instance.GetComponent<Button>().onClick.AddListener(() => SelectLevel(level));
 
-            UILevel instance = Instantiate(pageList[i]);
-            instance.SetStars(level.Stars);
-            instance.transform.SetParent(levelSelectPanel);
-            instance.GetComponent<Button>().onClick.AddListener(() => SelectLevel(level));
-
-            if (!level.Locked) {
-                instance.lockImage.SetActive(false);
-                instance.levelIDText.text = level.ID.ToString();
-            } else {
-                instance.lockImage.SetActive(true);
-                instance.levelIDText.text = "";
+                if (!level.Locked) {
+                    instance.lockImage.SetActive(false);
+                    instance.levelIDText.text = (level.ID + 1).ToString();
+                } else {
+                    instance.lockImage.SetActive(true);
+                    instance.levelIDText.text = "";
+                }
             }
         }
     }
@@ -70,7 +78,7 @@ public class UILevelSelect : MonoBehaviour {
     private void SelectLevel(Level level) {
         if (level.Locked) {
             levelPopup.gameObject.SetActive(true);
-            levelPopup.SetText("Level " + level.ID + " is currently locked.\nComplete level " + (level.ID - 1) + " to unlock it!");
+            levelPopup.SetText("Level " + (level.ID + 1) + " is currently locked.\nComplete level " + level.ID + " to unlock it!");
             Debug.Log("Level locked.");
         } else {
             Debug.Log("Go to level: " + level.ID);

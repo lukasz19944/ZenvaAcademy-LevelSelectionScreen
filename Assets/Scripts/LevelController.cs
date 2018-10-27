@@ -20,7 +20,7 @@ public class LevelController : MonoBehaviour {
         }
 
         levels = new List<Level> {
-            new Level(0, "Level1", false, 2, false),
+            new Level(0, "Level1", false, 0, false),
             new Level(1, "Level2", false, 0, true),
             new Level(2, "Level3", false, 0, true),
             new Level(3, "Level4", false, 0, true),
@@ -42,10 +42,14 @@ public class LevelController : MonoBehaviour {
 
     public void CompleteLevel(string levelName) {
         levels.Find(i => i.LevelName == levelName).Complete();
+
+        UnlockLevel(levelName.Substring(0, 5) + (int.Parse(levelName.Substring(5)) + 1).ToString());
     }
 
     public void CompleteLevel(string levelName, int stars) {
         levels.Find(i => i.LevelName == levelName).Complete(stars);
+
+        UnlockLevel(levelName.Substring(0, 5) + (int.Parse(levelName.Substring(5)) + 1).ToString());
     }
 
     public void LockLevel(string levelName) {
